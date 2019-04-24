@@ -237,7 +237,7 @@ if sys.argv[1] == 'fc':
     #
     # Add pseudo count
     #
-
+    print(numColumns,pseudo)
     reads.ix[:, list(range(1, numColumns))] += pseudo
 
     #
@@ -372,7 +372,7 @@ elif sys.argv[1] in ['bf', 'analysis']:
     rna2gene = {}
 
     def round_to_hundredth(x):
-        return round(x*100) / 100.0
+        return np.round(x*100) / 100.0
 
     def func_linear(x, a, b):
         return (a * x) + b
@@ -625,7 +625,7 @@ elif sys.argv[1] in ['bf', 'analysis']:
         #
         logratio_lookup = {}
         for i in arange(xmin, xmax+0.01, 0.01):
-            logratio_lookup[round(
+            logratio_lookup[np.round(
                 i*100)] = log2(kess.evaluate(i) / knon.evaluate(i))
         #
         # calculate BFs from lookup table for withheld test set
@@ -639,8 +639,8 @@ elif sys.argv[1] in ['bf', 'analysis']:
             for rnatag in gene2rna[g]:
                 for foldchange in list(fc[rnatag].values()):
                     if foldchange >= xmin and foldchange <= xmax:
-                        testx.append(round(foldchange*100)/100)
-                        testy.append(logratio_lookup[round(foldchange*100)][0])
+                        testx.append(np.round(foldchange*100)/100)
+                        testy.append(logratio_lookup[np.round(foldchange*100)][0])
         try:
             slope, intercept, r_value, p_value, std_err = stats.linregress(
                 array(testx), array(testy))
@@ -785,7 +785,7 @@ elif sys.argv[1] in ['bf', 'analysis']:
             for g in genes_array[gene_train_idx]:
                 if g in networkscores:
                     if networkscores[g] >= xmin and networkscores[g] <= xmax:
-                        testx.append(round(networkscores[g]*100)/100)
+                        testx.append(np.round(networkscores[g]*100)/100)
                         testy.append(log2(kess.evaluate(networkscores[g])[
                                      0] / knon.evaluate(networkscores[g])[0]))
 
